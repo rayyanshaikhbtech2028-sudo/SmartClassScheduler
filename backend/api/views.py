@@ -204,6 +204,84 @@ def approve_timetable(request, pk):
     return Response({"status": "success", "message": f"Variant {tt.variant_number} published! All other variants deleted."})
 
 
+# --- SWAP / MOVE SLOTS ---
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def swap_slots(request):
+    if not request.user.is_staff:
+        return Response({"error": "Only admins can swap slots"}, status=403)
+
+    slot_a_id = request.data.get('slot_a_id')
+    slot_b_id = request.data.get('slot_b_id')
+    slot_id = request.data.get('slot_id')
+    target_day = request.data.get('target_day')
+    target_slot_index = request.data.get('target_slot_index')
+
+    TIME_SLOT_MAP = {
+        0: ("07:30", "08:30"),
+        1: ("08:30", "09:30"),
+        2: ("10:00", "11:00"),
+        3: ("11:00", "12:00"),
+        4: ("12:00", "13:00"),
+        5: ("13:00", "14:00"),
+        6: ("14:00", "15:00"),
+        7: ("15:00", "16:00"),
+    }
+
+    # --- Case 1: Swap two slots ---
+    if slot_a_id and slot_b_id:
+        try:
+            slot_a = TimetableSlot.objects.get(id=slot_a_id)
+            slot_b = TimetableSlot.objects.get(id=slot_b_id)
+        except TimetableSlot.DoesNotExist:
+            return Response({"error": "Slot not found"}, status=404)
+
+        if slot_a.timetable_id != slot_b.timetable_id:
+            return Response({"error": "Slots must belong to the same timetable"}, status=400)
+
+        # Swap day, start_time, end_time, room
+        slot_a.day, slot_b.day = slot_b.day, slot_a.day
+        slot_a.start_time, slot_b.start_time = slot_b.start_time, slot_a.start_time
+        slot_a.end_time, slot_b.end_time = slot_b.end_time, slot_a.end_time
+        slot_a.room, slot_b.room = slot_b.room, slot_a.room
+        slot_a.save()
+        slot_b.save()
+
+        return Response({
+            "status": "success",
+            "slots": [
+                TimetableSlotSerializer(slot_a).data,
+                TimetableSlotSerializer(slot_b).data,
+            ]
+        })
+
+    # --- Case 2: Move slot to empty cell ---
+    if slot_id and target_day is not None and target_slot_index is not None:
+        try:
+            slot = TimetableSlot.objects.get(id=slot_id)
+        except TimetableSlot.DoesNotExist:
+            return Response({"error": "Slot not found"}, status=404)
+
+        idx = int(target_slot_index)
+        if idx not in TIME_SLOT_MAP:
+            return Response({"error": "Invalid slot index"}, status=400)
+
+        start_str, end_str = TIME_SLOT_MAP[idx]
+        from datetime import time as dt_time
+        slot.day = target_day
+        slot.start_time = dt_time(*map(int, start_str.split(":")))
+        slot.end_time = dt_time(*map(int, end_str.split(":")))
+        slot.save()
+
+        return Response({
+            "status": "success",
+            "slots": [TimetableSlotSerializer(slot).data]
+        })
+
+    return Response({"error": "Provide either (slot_a_id, slot_b_id) or (slot_id, target_day, target_slot_index)"}, status=400)
+
+
 # --- PDF EXPORT ---
 @csrf_exempt
 @api_view(['GET'])

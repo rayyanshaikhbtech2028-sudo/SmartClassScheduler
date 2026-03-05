@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;800;900&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;800;900&family=Outfit:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
 
     <script>
         tailwind.config = {
@@ -32,11 +35,26 @@
     </script>
 
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
-        body { background-color: #0a0f1e; color: white; overflow: hidden; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
+        body {
+            background-color: #0a0f1e;
+            color: white;
+            overflow: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
         ::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #2dd4bf 0%, #4f46e5 100%);
             border-radius: 10px;
@@ -49,12 +67,14 @@
             -webkit-backdrop-filter: blur(16px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
+
         .glass-heavy {
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(24px) saturate(200%);
             -webkit-backdrop-filter: blur(24px) saturate(200%);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
+
         .glass-card {
             background: rgba(15, 23, 42, 0.5);
             backdrop-filter: blur(20px);
@@ -64,15 +84,20 @@
             position: relative;
             overflow: hidden;
         }
+
         .glass-card::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(45,212,191,0.08) 0%, transparent 50%, rgba(79,70,229,0.06) 100%);
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.08) 0%, transparent 50%, rgba(79, 70, 229, 0.06) 100%);
             opacity: 0;
             transition: opacity 0.5s ease;
         }
-        .glass-card:hover::before { opacity: 1; }
+
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
         .glass-card:hover {
             transform: translateY(-8px) scale(1.01);
             border-color: rgba(45, 212, 191, 0.3);
@@ -90,15 +115,22 @@
             -webkit-text-fill-color: transparent;
             animation: shimmer-text 4s linear infinite;
         }
+
         @keyframes shimmer-text {
-            0% { background-position: 0% center; }
-            100% { background-position: 200% center; }
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
         }
 
         /* ── Glowing border animation ── */
         .glow-border {
             position: relative;
         }
+
         .glow-border::after {
             content: '';
             position: absolute;
@@ -111,15 +143,30 @@
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-        .glow-border:hover::after { opacity: 1; }
+
+        .glow-border:hover::after {
+            opacity: 1;
+        }
+
         @keyframes glow-rotate {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* ── Nav link underline ── */
-        .nav-link { position: relative; }
+        .nav-link {
+            position: relative;
+        }
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -130,10 +177,15 @@
             background: linear-gradient(90deg, #2dd4bf, #4f46e5);
             transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
         }
-        .nav-link.active::after,
-        .nav-link:hover::after { width: 100%; }
 
-        .text-atlas-teal { color: #2dd4bf; }
+        .nav-link.active::after,
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .text-atlas-teal {
+            color: #2dd4bf;
+        }
 
         /* ── Inputs ── */
         .custom-input {
@@ -146,6 +198,7 @@
             border-radius: 10px;
             font-size: 14px;
         }
+
         .custom-input:focus {
             border-color: #2dd4bf;
             outline: none;
@@ -154,8 +207,11 @@
 
         /* ── Page Transition ── */
         .page-transition {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 100%);
             z-index: 9999;
             transform: translateY(100%);
@@ -163,39 +219,87 @@
         }
 
         /* ── Timetable hover rows ── */
-        tr.hover-row { transition: background 0.2s ease; }
-        tr.hover-row:hover td { background-color: rgba(45, 212, 191, 0.03); }
+        tr.hover-row {
+            transition: background 0.2s ease;
+        }
+
+        tr.hover-row:hover td {
+            background-color: rgba(45, 212, 191, 0.03);
+        }
 
         /* ── Blob animations ── */
         @keyframes blob {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -50px) scale(1.1); }
-            50% { transform: translate(-20px, 20px) scale(0.95); }
-            75% { transform: translate(20px, -20px) scale(1.05); }
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            25% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            50% {
+                transform: translate(-20px, 20px) scale(0.95);
+            }
+
+            75% {
+                transform: translate(20px, -20px) scale(1.05);
+            }
         }
-        .animate-blob { animation: blob 8s ease-in-out infinite; }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
+
+        .animate-blob {
+            animation: blob 8s ease-in-out infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
         }
-        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
 
         /* ── Pulse ring for feature icons ── */
         @keyframes pulse-ring {
-            0% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4); }
-            70% { box-shadow: 0 0 0 12px rgba(45, 212, 191, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(45, 212, 191, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 12px rgba(45, 212, 191, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(45, 212, 191, 0);
+            }
         }
-        .pulse-icon:hover { animation: pulse-ring 1.5s ease-out infinite; }
+
+        .pulse-icon:hover {
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
 
         /* ── Grid background pattern ── */
         .grid-bg {
             background-image:
-                linear-gradient(rgba(45,212,191,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(45,212,191,0.03) 1px, transparent 1px);
+                linear-gradient(rgba(45, 212, 191, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(45, 212, 191, 0.03) 1px, transparent 1px);
             background-size: 60px 60px;
         }
 
@@ -210,44 +314,96 @@
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             box-shadow: 0 4px 20px -5px rgba(45, 212, 191, 0.4);
         }
+
         .btn-primary:hover {
             transform: translateY(-2px) scale(1.02);
             box-shadow: 0 8px 30px -5px rgba(45, 212, 191, 0.5);
         }
+
         .btn-glass {
-            background: rgba(255,255,255,0.04);
+            background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
+
         .btn-glass:hover {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             border-color: rgba(45, 212, 191, 0.3);
             transform: translateY(-2px);
         }
 
         /* ── Loader ── */
         .loader {
-            border: 3px solid rgba(255,255,255,0.1);
+            border: 3px solid rgba(255, 255, 255, 0.1);
             border-left-color: #2dd4bf;
             border-radius: 50%;
-            width: 24px; height: 24px;
+            width: 24px;
+            height: 24px;
             animation: spin 1s linear infinite;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Drag-Drop ── */
+        .tt-tile[draggable="true"] {
+            cursor: grab;
+        }
+
+        .tt-tile[draggable="true"]:active {
+            cursor: grabbing;
+        }
+
+        .tt-tile.dragging {
+            opacity: 0.35;
+            transform: scale(0.92);
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
+        }
+
+        td.drag-over {
+            background: rgba(45, 212, 191, 0.08) !important;
+            box-shadow: inset 0 0 0 2px rgba(45, 212, 191, 0.4);
+            border-radius: 8px;
+        }
+
+        @keyframes drop-flash {
+            0% {
+                box-shadow: inset 0 0 0 2px rgba(52, 211, 153, 0.8);
+                background: rgba(52, 211, 153, 0.12);
+            }
+
+            100% {
+                box-shadow: inset 0 0 0 0 transparent;
+                background: transparent;
+            }
+        }
+
+        td.drop-success {
+            animation: drop-flash 0.6s ease-out forwards;
+        }
     </style>
 </head>
+
 <body class="antialiased h-screen flex flex-col relative">
 
     <!-- ═══ Add Modal ═══ -->
-    <div id="add-modal" class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
+    <div id="add-modal"
+        class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
         <div class="glass-heavy p-8 rounded-3xl w-full max-w-sm shadow-2xl relative border border-white/10">
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-atlas-teal to-transparent"></div>
-            <button onclick="app.closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-slate-400 hover:text-atlas-teal hover:border-atlas-teal/30 transition-all">
+            <div
+                class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-atlas-teal to-transparent">
+            </div>
+            <button onclick="app.closeModal()"
+                class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-slate-400 hover:text-atlas-teal hover:border-atlas-teal/30 transition-all">
                 <i class="fas fa-times text-sm"></i>
             </button>
             <div class="text-center mb-6">
-                <div class="w-14 h-14 bg-gradient-to-br from-atlas-teal/20 to-atlas-indigo/20 rounded-2xl mx-auto flex items-center justify-center text-xl text-atlas-teal mb-3 border border-atlas-teal/20">
+                <div
+                    class="w-14 h-14 bg-gradient-to-br from-atlas-teal/20 to-atlas-indigo/20 rounded-2xl mx-auto flex items-center justify-center text-xl text-atlas-teal mb-3 border border-atlas-teal/20">
                     <i class="fas fa-plus"></i>
                 </div>
                 <h3 class="text-2xl font-bold font-exo" id="modal-title">Add New</h3>
@@ -257,9 +413,13 @@
     </div>
 
     <!-- ═══ Login Overlay ═══ -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
-        <div class="glass-heavy p-10 rounded-3xl w-full max-w-md space-y-6 relative overflow-hidden border border-white/10 shadow-[0_0_80px_-20px_rgba(45,212,191,0.15)]">
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-atlas-teal/80 to-transparent"></div>
+    <div id="login-overlay"
+        class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
+        <div
+            class="glass-heavy p-10 rounded-3xl w-full max-w-md space-y-6 relative overflow-hidden border border-white/10 shadow-[0_0_80px_-20px_rgba(45,212,191,0.15)]">
+            <div
+                class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-atlas-teal/80 to-transparent">
+            </div>
             <div class="absolute -top-20 -right-20 w-40 h-40 bg-atlas-teal/5 rounded-full blur-3xl"></div>
             <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-indigo-500/5 rounded-full blur-3xl"></div>
 
@@ -267,18 +427,24 @@
                 <svg class="w-16 h-16 mx-auto mb-4 animate-float" viewBox="0 0 100 100">
                     <defs>
                         <linearGradient id="cubeGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2dd4bf" /><stop offset="100%" style="stop-color:#14b8a6" />
+                            <stop offset="0%" style="stop-color:#2dd4bf" />
+                            <stop offset="100%" style="stop-color:#14b8a6" />
                         </linearGradient>
                         <linearGradient id="cubeGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#2e1065" /><stop offset="100%" style="stop-color:#4f46e5" />
+                            <stop offset="0%" style="stop-color:#2e1065" />
+                            <stop offset="100%" style="stop-color:#4f46e5" />
                         </linearGradient>
                         <linearGradient id="cubeGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.6" /><stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
+                            <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.6" />
+                            <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
                         </linearGradient>
                     </defs>
-                    <polygon points="50,20 80,35 50,50 20,35" fill="url(#cubeGradient1)" stroke="#2dd4bf" stroke-width="1"/>
-                    <polygon points="20,35 20,65 50,80 50,50" fill="url(#cubeGradient2)" stroke="#2e1065" stroke-width="1"/>
-                    <polygon points="50,50 50,80 80,65 80,35" fill="url(#cubeGradient3)" stroke="#6366f1" stroke-width="1"/>
+                    <polygon points="50,20 80,35 50,50 20,35" fill="url(#cubeGradient1)" stroke="#2dd4bf"
+                        stroke-width="1" />
+                    <polygon points="20,35 20,65 50,80 50,50" fill="url(#cubeGradient2)" stroke="#2e1065"
+                        stroke-width="1" />
+                    <polygon points="50,50 50,80 80,65 80,35" fill="url(#cubeGradient3)" stroke="#6366f1"
+                        stroke-width="1" />
                 </svg>
                 <h2 class="text-3xl font-bold font-exo mb-1"><span class="text-atlas-teal">ATLAS</span></h2>
                 <p class="text-slate-500 text-xs font-exo tracking-[0.2em]">SKILLTECH UNIVERSITY</p>
@@ -287,18 +453,22 @@
 
             <form onsubmit="auth.login(event)" class="space-y-4 relative z-10">
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-500 tracking-[0.15em] mb-1 block">Username</label>
+                    <label
+                        class="text-[10px] uppercase font-bold text-slate-500 tracking-[0.15em] mb-1 block">Username</label>
                     <input type="text" id="login-user" class="custom-input" placeholder="admin" required>
                 </div>
                 <div>
-                    <label class="text-[10px] uppercase font-bold text-slate-500 tracking-[0.15em] mb-1 block">Password</label>
+                    <label
+                        class="text-[10px] uppercase font-bold text-slate-500 tracking-[0.15em] mb-1 block">Password</label>
                     <input type="password" id="login-pass" class="custom-input" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="w-full py-3.5 btn-primary rounded-xl font-bold text-white text-sm tracking-wide">
+                <button type="submit"
+                    class="w-full py-3.5 btn-primary rounded-xl font-bold text-white text-sm tracking-wide">
                     Sign In
                 </button>
             </form>
-            <button onclick="auth.closeLogin()" class="w-full text-sm text-slate-600 hover:text-atlas-teal transition-colors relative z-10">Cancel</button>
+            <button onclick="auth.closeLogin()"
+                class="w-full text-sm text-slate-600 hover:text-atlas-teal transition-colors relative z-10">Cancel</button>
         </div>
     </div>
 
@@ -309,33 +479,44 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div class="flex items-center justify-between h-full">
                 <div class="flex items-center gap-3 cursor-pointer group" onclick="router.navigate('home')">
-                    <svg class="w-10 h-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 group-hover:drop-shadow-[0_0_12px_rgba(45,212,191,0.5)]" viewBox="0 0 100 100">
+                    <svg class="w-10 h-10 transition-all duration-500 group-hover:scale-110 group-hover:rotate-12 group-hover:drop-shadow-[0_0_12px_rgba(45,212,191,0.5)]"
+                        viewBox="0 0 100 100">
                         <defs>
                             <linearGradient id="navCubeGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#2dd4bf" /><stop offset="100%" style="stop-color:#14b8a6" />
+                                <stop offset="0%" style="stop-color:#2dd4bf" />
+                                <stop offset="100%" style="stop-color:#14b8a6" />
                             </linearGradient>
                             <linearGradient id="navCubeGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#2e1065" /><stop offset="100%" style="stop-color:#4f46e5" />
+                                <stop offset="0%" style="stop-color:#2e1065" />
+                                <stop offset="100%" style="stop-color:#4f46e5" />
                             </linearGradient>
                             <linearGradient id="navCubeGradient3" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.6" /><stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
+                                <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.6" />
+                                <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
                             </linearGradient>
                         </defs>
-                        <polygon points="50,20 80,35 50,50 20,35" fill="url(#navCubeGradient1)" stroke="#2dd4bf" stroke-width="1"/>
-                        <polygon points="20,35 20,65 50,80 50,50" fill="url(#navCubeGradient2)" stroke="#2e1065" stroke-width="1"/>
-                        <polygon points="50,50 50,80 80,65 80,35" fill="url(#navCubeGradient3)" stroke="#6366f1" stroke-width="1"/>
+                        <polygon points="50,20 80,35 50,50 20,35" fill="url(#navCubeGradient1)" stroke="#2dd4bf"
+                            stroke-width="1" />
+                        <polygon points="20,35 20,65 50,80 50,50" fill="url(#navCubeGradient2)" stroke="#2e1065"
+                            stroke-width="1" />
+                        <polygon points="50,50 50,80 80,65 80,35" fill="url(#navCubeGradient3)" stroke="#6366f1"
+                            stroke-width="1" />
                     </svg>
                     <div class="flex flex-col">
                         <span class="font-exo font-black text-2xl tracking-tight text-atlas-teal">ATLAS</span>
-                        <span class="font-exo text-[9px] text-slate-500 tracking-[0.2em] -mt-1">SKILLTECH UNIVERSITY</span>
+                        <span class="font-exo text-[9px] text-slate-500 tracking-[0.2em] -mt-1">SKILLTECH
+                            UNIVERSITY</span>
                     </div>
                 </div>
 
                 <div class="hidden md:flex items-center space-x-8">
-                    <button onclick="router.navigate('home')" id="nav-home" class="nav-link active text-sm font-medium hover:text-atlas-teal transition-colors">Product</button>
-                    <button onclick="router.navigate('dashboard')" id="nav-dashboard" class="nav-link text-sm font-medium hover:text-atlas-teal transition-colors">Dashboard</button>
+                    <button onclick="router.navigate('home')" id="nav-home"
+                        class="nav-link active text-sm font-medium hover:text-atlas-teal transition-colors">Product</button>
+                    <button onclick="router.navigate('dashboard')" id="nav-dashboard"
+                        class="nav-link text-sm font-medium hover:text-atlas-teal transition-colors">Dashboard</button>
                     <div id="nav-auth-container">
-                        <button onclick="auth.openLogin()" class="btn-primary text-white px-6 py-2.5 rounded-full text-sm font-medium">Login</button>
+                        <button onclick="auth.openLogin()"
+                            class="btn-primary text-white px-6 py-2.5 rounded-full text-sm font-medium">Login</button>
                     </div>
                 </div>
             </div>
@@ -345,32 +526,43 @@
     <main id="app" class="pt-20 w-full h-screen relative flex flex-col overflow-hidden"></main>
 
     <!-- ═══ Diagnostics Modal ═══ -->
-    <div id="diag-modal" class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
+    <div id="diag-modal"
+        class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
         <div class="glass-heavy p-8 rounded-3xl w-full max-w-lg shadow-2xl relative border border-white/10">
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
-            <button onclick="document.getElementById('diag-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-slate-400 hover:text-red-400 hover:border-red-400/30 transition-all">
+            <div
+                class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent">
+            </div>
+            <button onclick="document.getElementById('diag-modal').classList.add('hidden')"
+                class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-slate-400 hover:text-red-400 hover:border-red-400/30 transition-all">
                 <i class="fas fa-times text-sm"></i>
             </button>
             <div class="text-center mb-5">
-                <div class="w-14 h-14 bg-gradient-to-br from-red-500/20 to-amber-500/20 rounded-2xl mx-auto flex items-center justify-center text-xl text-red-400 mb-3 border border-red-500/20">
+                <div
+                    class="w-14 h-14 bg-gradient-to-br from-red-500/20 to-amber-500/20 rounded-2xl mx-auto flex items-center justify-center text-xl text-red-400 mb-3 border border-red-500/20">
                     <i class="fas fa-triangle-exclamation"></i>
                 </div>
                 <h3 class="text-2xl font-bold font-exo" id="diag-title">Diagnostics</h3>
             </div>
             <div id="diag-body" class="space-y-3 max-h-[50vh] overflow-y-auto"></div>
-            <button onclick="document.getElementById('diag-modal').classList.add('hidden')" class="w-full mt-6 py-3 btn-glass rounded-xl font-bold text-sm text-slate-300">Close</button>
+            <button onclick="document.getElementById('diag-modal').classList.add('hidden')"
+                class="w-full mt-6 py-3 btn-glass rounded-xl font-bold text-sm text-slate-300">Close</button>
         </div>
     </div>
 
     <!-- ═══ Pinned Slots Modal ═══ -->
-    <div id="pin-modal" class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
+    <div id="pin-modal"
+        class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
         <div class="glass-heavy p-8 rounded-3xl w-full max-w-md shadow-2xl relative border border-white/10">
-            <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent"></div>
-            <button onclick="document.getElementById('pin-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-slate-400 hover:text-atlas-teal hover:border-atlas-teal/30 transition-all">
+            <div
+                class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-400 to-transparent">
+            </div>
+            <button onclick="document.getElementById('pin-modal').classList.add('hidden')"
+                class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-slate-400 hover:text-atlas-teal hover:border-atlas-teal/30 transition-all">
                 <i class="fas fa-times text-sm"></i>
             </button>
             <div class="text-center mb-5">
-                <div class="w-14 h-14 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-2xl mx-auto flex items-center justify-center text-xl text-amber-400 mb-3 border border-amber-400/20">
+                <div
+                    class="w-14 h-14 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-2xl mx-auto flex items-center justify-center text-xl text-amber-400 mb-3 border border-amber-400/20">
                     <i class="fas fa-thumbtack"></i>
                 </div>
                 <h3 class="text-xl font-bold font-exo">Fixed Slots</h3>
@@ -378,14 +570,22 @@
             </div>
             <div id="pin-list" class="space-y-2 max-h-[30vh] overflow-y-auto mb-4"></div>
             <div class="space-y-3 border-t border-white/5 pt-4">
-                <select id="pin-subject" class="custom-input text-sm"><option>Select Subject</option></select>
+                <select id="pin-subject" class="custom-input text-sm">
+                    <option>Select Subject</option>
+                </select>
                 <div class="grid grid-cols-2 gap-2">
                     <select id="pin-day" class="custom-input text-sm">
-                        <option value="MON">Monday</option><option value="TUE">Tuesday</option><option value="WED">Wednesday</option><option value="THU">Thursday</option><option value="FRI">Friday</option>
+                        <option value="MON">Monday</option>
+                        <option value="TUE">Tuesday</option>
+                        <option value="WED">Wednesday</option>
+                        <option value="THU">Thursday</option>
+                        <option value="FRI">Friday</option>
                     </select>
                     <select id="pin-slot" class="custom-input text-sm"></select>
                 </div>
-                <button onclick="app.addPin()" class="w-full py-3 btn-primary rounded-xl font-bold text-sm text-white"><i class="fas fa-thumbtack mr-2"></i>Pin Slot</button>
+                <button onclick="app.addPin()"
+                    class="w-full py-3 btn-primary rounded-xl font-bold text-sm text-white"><i
+                        class="fas fa-thumbtack mr-2"></i>Pin Slot</button>
             </div>
         </div>
     </div>
@@ -404,7 +604,7 @@
             { id: 7, label: "03:00 - 04:00" }
         ];
 
-        const DAY_LABELS = {MON:'Monday', TUE:'Tuesday', WED:'Wednesday', THU:'Thursday', FRI:'Friday'};
+        const DAY_LABELS = { MON: 'Monday', TUE: 'Tuesday', WED: 'Wednesday', THU: 'Thursday', FRI: 'Friday' };
 
         // ═══ AUTH ═══
         const auth = {
@@ -415,7 +615,8 @@
                 gsap.from("#login-overlay > div", { y: 40, opacity: 0, scale: 0.95, duration: 0.5, ease: "back.out(1.4)" });
             },
             closeLogin: () => {
-                gsap.to("#login-overlay > div", { y: 20, opacity: 0, scale: 0.95, duration: 0.25, ease: "power2.in",
+                gsap.to("#login-overlay > div", {
+                    y: 20, opacity: 0, scale: 0.95, duration: 0.25, ease: "power2.in",
                     onComplete: () => document.getElementById('login-overlay').classList.add('hidden')
                 });
             },
@@ -425,12 +626,12 @@
                 const u = document.getElementById('login-user').value;
                 const p = document.getElementById('login-pass').value;
                 try {
-                    const res = await fetch(`${API_URL}/login/`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({username: u, password: p}) });
-                    if(!res.ok) throw new Error("Invalid Credentials");
+                    const res = await fetch(`${API_URL}/login/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
+                    if (!res.ok) throw new Error("Invalid Credentials");
                     const data = await res.json();
                     auth.token = data.token; auth.user = data;
                     auth.closeLogin(); auth.updateNav(); router.navigate('dashboard');
-                } catch(err) { alert("Login Failed: " + err.message); }
+                } catch (err) { alert("Login Failed: " + err.message); }
             },
 
             logout: () => { auth.token = null; auth.user = null; auth.updateNav(); router.navigate('home'); },
@@ -455,11 +656,11 @@
                 if (pageId === 'dashboard' && !auth.user) { auth.openLogin(); return; }
                 document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
                 const nav = document.getElementById(`nav-${pageId}`);
-                if(nav) nav.classList.add('active');
+                if (nav) nav.classList.add('active');
                 const tl = gsap.timeline();
                 tl.to("#pageTransition", { y: "0%", duration: 0.4, ease: "power3.inOut" })
-                  .call(() => { app.render(pageId); if(pageId==='home') window.scrollTo(0,0); })
-                  .to("#pageTransition", { y: "-100%", duration: 0.4, ease: "power3.inOut" });
+                    .call(() => { app.render(pageId); if (pageId === 'home') window.scrollTo(0, 0); })
+                    .to("#pageTransition", { y: "-100%", duration: 0.4, ease: "power3.inOut" });
             }
         };
 
@@ -510,17 +711,17 @@
                     document.getElementById('admin-header').classList.remove('hidden');
                     document.getElementById('admin-actions').classList.remove('hidden');
                     try {
-                        const res = await fetch(`${API_URL}/departments/`, { headers: {'Authorization': `Token ${auth.token}`} });
+                        const res = await fetch(`${API_URL}/departments/`, { headers: { 'Authorization': `Token ${auth.token}` } });
                         const depts = await res.json();
                         const sel = document.getElementById('dept-select');
                         sel.innerHTML = '<option value="" disabled selected>Select Department</option>';
                         depts.forEach(d => sel.innerHTML += `<option value="${d.id}">${d.name}</option>`);
                         if (depts.length === 1) { sel.value = depts[0].id; await app.onDeptChange(); }
-                    } catch(err) { console.error('Failed to load departments:', err); }
+                    } catch (err) { console.error('Failed to load departments:', err); }
                 } else {
                     app.state.currentDept = auth.user.department_id;
                     try {
-                        const sRes = await fetch(`${API_URL}/slots/?department=${auth.user.department_id}&teacher=${auth.user.teacher_id}`, { headers: {'Authorization': `Token ${auth.token}`} });
+                        const sRes = await fetch(`${API_URL}/slots/?department=${auth.user.department_id}&teacher=${auth.user.teacher_id}`, { headers: { 'Authorization': `Token ${auth.token}` } });
                         const slots = await sRes.json();
                         app.renderTimetable(slots);
                         const name = auth.user.teacher_name || auth.user.username;
@@ -531,7 +732,7 @@
                             : 'text-[10px] font-mono text-slate-500 bg-slate-500/[0.06] px-3 py-1.5 rounded-full border border-slate-500/15 tracking-wider';
                         // PDF download for faculty
                         if (slots.length > 0) {
-                            const ttRes = await fetch(`${API_URL}/timetables/?department=${auth.user.department_id}&status=PUBLISHED`, { headers: {'Authorization': `Token ${auth.token}`} });
+                            const ttRes = await fetch(`${API_URL}/timetables/?department=${auth.user.department_id}&status=PUBLISHED`, { headers: { 'Authorization': `Token ${auth.token}` } });
                             const tts = await ttRes.json();
                             if (tts.length > 0) {
                                 const dlBtn = document.getElementById('pdf-download-btn');
@@ -541,7 +742,7 @@
                                 }
                             }
                         }
-                    } catch(err) {
+                    } catch (err) {
                         console.error('Failed to load faculty timetable:', err);
                         app.renderTimetable([]);
                         document.getElementById('table-title').textContent = 'No published schedule yet';
@@ -551,15 +752,15 @@
 
             onDeptChange: async () => {
                 const deptId = document.getElementById('dept-select').value;
-                if(!deptId) return;
+                if (!deptId) return;
                 app.state.currentDept = deptId; app.state.currentBatch = null; app.state.currentVariant = null; app.state.variants = [];
                 try {
                     const [bRes, tRes, subRes, ttRes, pinRes] = await Promise.all([
-                        fetch(`${API_URL}/batches/`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/teachers/`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/subjects/`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/timetables/?department=${deptId}`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/pinned-slots/?department=${deptId}`, { headers: {'Authorization': `Token ${auth.token}`} }),
+                        fetch(`${API_URL}/batches/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/teachers/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/subjects/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/timetables/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/pinned-slots/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                     ]);
                     const [batches, teachers, subjects, timetables, pins] = await Promise.all([bRes.json(), tRes.json(), subRes.json(), ttRes.json(), pinRes.json()]);
                     app.state.batches = batches.filter(x => x.department == deptId);
@@ -575,7 +776,7 @@
                     app.renderVariantSelector();
                     document.getElementById('table-title').textContent = 'Select a batch to view schedule';
                     document.getElementById('status-text').textContent = 'ADMIN';
-                } catch(err) { console.error('Dept change error:', err); alert('Error loading department data.'); }
+                } catch (err) { console.error('Dept change error:', err); alert('Error loading department data.'); }
             },
 
             onBatchChange: async () => {
@@ -585,15 +786,15 @@
             },
 
             refreshTimetable: async () => {
-                const deptId = app.state.currentDept; if(!deptId) return;
-                if(!app.state.currentBatch) {
+                const deptId = app.state.currentDept; if (!deptId) return;
+                if (!app.state.currentBatch) {
                     app.renderTimetable([]);
                     document.getElementById('table-title').textContent = 'Select a batch to view schedule'; return;
                 }
                 try {
                     let url = `${API_URL}/slots/?department=${deptId}&batch=${app.state.currentBatch}`;
                     if (app.state.currentVariant) url += `&timetable=${app.state.currentVariant}`;
-                    const sRes = await fetch(url, { headers: {'Authorization': `Token ${auth.token}`} });
+                    const sRes = await fetch(url, { headers: { 'Authorization': `Token ${auth.token}` } });
                     const slots = await sRes.json(); app.renderTimetable(slots);
                     const batchName = app.state.batches.find(b => b.id == app.state.currentBatch)?.name || 'Batch';
                     const variant = app.state.variants.find(v => v.id == app.state.currentVariant);
@@ -609,19 +810,19 @@
                         statusEl.textContent = 'ADMIN';
                         statusEl.className = 'text-[10px] font-mono text-atlas-teal bg-atlas-teal/[0.06] px-3 py-1.5 rounded-full border border-atlas-teal/15 tracking-wider';
                     }
-                } catch(err) { console.error('Refresh timetable error:', err); }
+                } catch (err) { console.error('Refresh timetable error:', err); }
             },
 
             refreshData: async () => {
                 const deptId = auth.user.is_admin ? document.getElementById('dept-select').value : auth.user.department_id;
-                if(!deptId) return; app.state.currentDept = deptId;
-                if(auth.user.is_admin) {
+                if (!deptId) return; app.state.currentDept = deptId;
+                if (auth.user.is_admin) {
                     const [bRes, tRes, subRes, ttRes, pinRes] = await Promise.all([
-                        fetch(`${API_URL}/batches/`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/teachers/`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/subjects/`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/timetables/?department=${deptId}`, { headers: {'Authorization': `Token ${auth.token}`} }),
-                        fetch(`${API_URL}/pinned-slots/?department=${deptId}`, { headers: {'Authorization': `Token ${auth.token}`} }),
+                        fetch(`${API_URL}/batches/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/teachers/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/subjects/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/timetables/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/pinned-slots/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                     ]);
                     const [batches, teachers, subjects, timetables, pins] = await Promise.all([bRes.json(), tRes.json(), subRes.json(), ttRes.json(), pinRes.json()]);
                     app.state.batches = batches.filter(x => x.department == deptId);
@@ -648,18 +849,18 @@
                     btnTea.className = "flex-1 py-2.5 text-sm font-bold bg-white/[0.03] hover:bg-white/[0.06] text-slate-400 rounded-lg border border-white/5 transition-all";
 
                     let filteredSubjects = app.state.subjects;
-                    if(app.state.currentBatch) {
+                    if (app.state.currentBatch) {
                         const batchId = parseInt(app.state.currentBatch);
                         const subBatchIds = app.state.batches.filter(b => b.parent_batch == batchId).map(b => b.id);
                         filteredSubjects = app.state.subjects.filter(s => [batchId, ...subBatchIds].includes(s.batch));
                     }
-                    if(filteredSubjects.length === 0) return container.innerHTML = '<div class="text-center text-slate-600 mt-10 text-sm">No subjects found. Select a batch above.</div>';
+                    if (filteredSubjects.length === 0) return container.innerHTML = '<div class="text-center text-slate-600 mt-10 text-sm">No subjects found. Select a batch above.</div>';
 
                     filteredSubjects.forEach(sub => {
                         let bOpts = `<option value="">-- Batch --</option>`;
-                        app.state.batches.forEach(b => bOpts += `<option value="${b.id}" ${sub.batch==b.id?'selected':''}>${b.name}</option>`);
+                        app.state.batches.forEach(b => bOpts += `<option value="${b.id}" ${sub.batch == b.id ? 'selected' : ''}>${b.name}</option>`);
                         let tOpts = `<option value="">-- Faculty --</option>`;
-                        app.state.teachers.forEach(t => tOpts += `<option value="${t.id}" ${sub.teacher==t.id?'selected':''}>${t.name}</option>`);
+                        app.state.teachers.forEach(t => tOpts += `<option value="${t.id}" ${sub.teacher == t.id ? 'selected' : ''}>${t.name}</option>`);
 
                         container.innerHTML += `
                             <div class="glass p-3.5 rounded-xl border-l-2 border-atlas-teal/50 mb-2 hover:bg-white/[0.02] transition-all duration-300 hover:border-atlas-teal">
@@ -681,11 +882,11 @@
                     btnTea.className = "flex-1 py-2.5 text-sm font-bold bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-lg shadow-lg shadow-purple-500/10 transition-all";
                     btnSub.className = "flex-1 py-2.5 text-sm font-bold bg-white/[0.03] hover:bg-white/[0.06] text-slate-400 rounded-lg border border-white/5 transition-all";
 
-                    if(app.state.teachers.length === 0) return container.innerHTML = '<div class="text-center text-slate-600 mt-10 text-sm">No faculty found.</div>';
+                    if (app.state.teachers.length === 0) return container.innerHTML = '<div class="text-center text-slate-600 mt-10 text-sm">No faculty found.</div>';
 
                     app.state.teachers.forEach(t => {
-                        const timeOpts = TIME_SLOTS.map(ts => `<option value="${ts.id}" ${t.preferred_start_slot==ts.id?'selected':''}>${ts.label}</option>`).join('');
-                        const endOpts = TIME_SLOTS.map(ts => `<option value="${ts.id}" ${t.preferred_end_slot==ts.id?'selected':''}>${ts.label}</option>`).join('');
+                        const timeOpts = TIME_SLOTS.map(ts => `<option value="${ts.id}" ${t.preferred_start_slot == ts.id ? 'selected' : ''}>${ts.label}</option>`).join('');
+                        const endOpts = TIME_SLOTS.map(ts => `<option value="${ts.id}" ${t.preferred_end_slot == ts.id ? 'selected' : ''}>${ts.label}</option>`).join('');
                         container.innerHTML += `
                             <div class="glass p-3.5 rounded-xl border-l-2 border-purple-500/50 mb-2 hover:bg-white/[0.02] transition-all duration-300 hover:border-purple-400">
                                 <div class="flex justify-between mb-2">
@@ -711,11 +912,13 @@
                 const tbody = document.getElementById('timetable-body'); tbody.innerHTML = '';
                 const matrix = Array.from({ length: 8 }, () => Array.from({ length: 5 }, () => []));
                 const dayMap = { 'MON': 0, 'TUE': 1, 'WED': 2, 'THU': 3, 'FRI': 4 };
+                const dayKeys = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+                const isAdmin = auth.user && auth.user.is_admin;
 
                 slots.forEach(slot => {
                     const timeKey = slot.start_time.substring(0, 5);
                     const slotIndex = TIME_SLOTS.findIndex(ts => ts.label.startsWith(timeKey));
-                    if(slotIndex !== -1 && dayMap[slot.day] !== undefined) matrix[slotIndex][dayMap[slot.day]].push(slot);
+                    if (slotIndex !== -1 && dayMap[slot.day] !== undefined) matrix[slotIndex][dayMap[slot.day]].push(slot);
                 });
 
                 const colorPalette = [
@@ -728,16 +931,18 @@
                 ];
 
                 matrix.forEach((row, i) => {
-                    if(i === 2) {
+                    if (i === 2) {
                         tbody.innerHTML += `<tr><td class="py-2 text-center text-[10px] font-bold text-slate-600 tracking-[0.3em]" colspan="6">
                             ─── BREAK · 09:30 — 10:00 ───</td></tr>`;
                     }
                     let html = `<tr class="border-b border-white/[0.03] hover-row">
                         <td class="px-4 py-3 border-r border-white/[0.03] font-mono text-slate-500 text-xs align-top pt-4 whitespace-nowrap">${TIME_SLOTS[i].label}</td>`;
 
-                    row.forEach(cellSlots => {
-                        html += `<td class="p-1 border-r border-white/[0.03] w-1/5 align-top">`;
-                        if(cellSlots.length > 0) {
+                    row.forEach((cellSlots, dayIdx) => {
+                        const cellDay = dayKeys[dayIdx];
+                        const dropAttrs = isAdmin ? `ondragover="app.handleDragOver(event)" ondragleave="app.handleDragLeave(event)" ondrop="app.handleDrop(event)"` : '';
+                        html += `<td class="p-1 border-r border-white/[0.03] w-1/5 align-top" data-day="${cellDay}" data-slot-index="${i}" ${dropAttrs}>`;
+                        if (cellSlots.length > 0) {
                             html += `<div class="flex flex-col gap-1">`;
                             cellSlots.forEach(cell => {
                                 const c = colorPalette[cell.subject % colorPalette.length] || colorPalette[0];
@@ -746,9 +951,10 @@
                                 const batchName = cell.batch_name || `Batch ${cell.batch}`;
                                 const teacherName = cell.teacher_name || '';
                                 const shortBatch = batchName.includes(' - Lab') ? batchName.split(' - ')[1] : batchName;
-                                html += `<div style="background:${c.bg};border:1px solid ${c.border}" class="rounded-lg p-2.5 text-xs cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-lg">
+                                const dragAttrs = isAdmin ? `draggable="true" ondragstart="app.handleDragStart(event)" ondragend="app.handleDragEnd(event)"` : '';
+                                html += `<div style="background:${c.bg};border:1px solid ${c.border}" class="tt-tile rounded-lg p-2.5 text-xs transition-all duration-300 hover:scale-[1.03] hover:shadow-lg" data-slot-id="${cell.id}" data-day="${cellDay}" data-slot-index="${i}" ${dragAttrs}>
                                     <div class="font-bold leading-tight line-clamp-1" style="color:${c.text}">${subName}</div>
-                                    ${auth.user.is_admin && teacherName ? `<div class="text-[10px] text-slate-400 mt-1"><i class="fas fa-user mr-1 opacity-50"></i>${teacherName}</div>` : ''}
+                                    ${isAdmin && teacherName ? `<div class="text-[10px] text-slate-400 mt-1"><i class="fas fa-user mr-1 opacity-50"></i>${teacherName}</div>` : ''}
                                     <div class="text-[10px] text-slate-400 flex justify-between items-end mt-1.5">
                                         <span><i class="fas fa-door-open mr-1 opacity-40"></i>${roomName}</span>
                                         <span class="bg-black/20 px-1.5 py-0.5 rounded text-[9px] truncate max-w-[80px]">${shortBatch}</span>
@@ -765,12 +971,12 @@
             },
 
             openModal: () => {
-                if(!app.state.currentDept) return alert("Select Dept First");
+                if (!app.state.currentDept) return alert("Select Dept First");
                 document.getElementById('add-modal').classList.remove('hidden');
                 gsap.from("#add-modal > div", { y: 30, opacity: 0, scale: 0.95, duration: 0.4, ease: "back.out(1.4)" });
                 const form = document.getElementById('add-form');
                 const title = document.getElementById('modal-title');
-                if(app.activeTab === 'teachers') {
+                if (app.activeTab === 'teachers') {
                     title.textContent = "Add Faculty";
                     form.innerHTML = `
                         <div><label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-1 block">Name</label><input name="name" class="custom-input" placeholder="Dr. Smith" required></div>
@@ -788,7 +994,8 @@
                 }
             },
             closeModal: () => {
-                gsap.to("#add-modal > div", { y: 20, opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in",
+                gsap.to("#add-modal > div", {
+                    y: 20, opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in",
                     onComplete: () => document.getElementById('add-modal').classList.add('hidden')
                 });
             },
@@ -800,15 +1007,15 @@
                 payload.department = app.state.currentDept;
                 try {
                     const ep = app.activeTab === 'teachers' ? 'teachers' : 'subjects';
-                    const res = await fetch(`${API_URL}/${ep}/`, { method: 'POST', headers: {'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}`}, body: JSON.stringify(payload) });
-                    if(!res.ok) throw new Error("Failed");
+                    const res = await fetch(`${API_URL}/${ep}/`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` }, body: JSON.stringify(payload) });
+                    if (!res.ok) throw new Error("Failed");
                     app.closeModal(); app.refreshData();
-                } catch(e) { alert("Error adding item"); }
+                } catch (e) { alert("Error adding item"); }
             },
 
             deleteItem: async (type, id) => {
-                if(!confirm("Delete?")) return;
-                await fetch(`${API_URL}/${type}/${id}/`, { method: 'DELETE', headers: {'Authorization': `Token ${auth.token}`} });
+                if (!confirm("Delete?")) return;
+                await fetch(`${API_URL}/${type}/${id}/`, { method: 'DELETE', headers: { 'Authorization': `Token ${auth.token}` } });
                 app.refreshData();
             },
 
@@ -817,14 +1024,16 @@
                 const updates = [];
                 document.querySelectorAll('.sub-batch').forEach(el => {
                     const id = el.dataset.id;
-                    updates.push(fetch(`${API_URL}/subjects/${id}/`, { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}`},
+                    updates.push(fetch(`${API_URL}/subjects/${id}/`, {
+                        method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` },
                         body: JSON.stringify({ batch: el.value || null, teacher: document.querySelector(`.sub-teacher[data-id="${id}"]`).value || null, weekly_lectures: document.querySelector(`.sub-lectures[data-id="${id}"]`).value })
                     }));
                 });
                 document.querySelectorAll('.t-start').forEach(el => {
                     const id = el.dataset.id;
                     const maxDayEl = document.querySelector(`.t-maxday[data-id="${id}"]`);
-                    updates.push(fetch(`${API_URL}/teachers/${id}/`, { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}`},
+                    updates.push(fetch(`${API_URL}/teachers/${id}/`, {
+                        method: 'PATCH', headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` },
                         body: JSON.stringify({ preferred_start_slot: el.value, preferred_end_slot: document.querySelector(`.t-end[data-id="${id}"]`).value, max_classes_per_day: maxDayEl ? maxDayEl.value : 4 })
                     }));
                 });
@@ -832,15 +1041,15 @@
             },
 
             runGeneration: async () => {
-                if(!app.state.currentDept) return alert("Please select a department first.");
+                if (!app.state.currentDept) return alert("Please select a department first.");
                 const btn = document.getElementById('genBtn');
                 const orig = btn.innerHTML;
                 btn.innerHTML = '<div class="loader mx-auto"></div>';
                 btn.disabled = true;
                 try {
-                    const res = await fetch(`${API_URL}/generate/`, { method: 'POST', headers: {'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}`}, body: JSON.stringify({ department_id: app.state.currentDept }) });
+                    const res = await fetch(`${API_URL}/generate/`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` }, body: JSON.stringify({ department_id: app.state.currentDept }) });
                     const data = await res.json();
-                    if(!res.ok) {
+                    if (!res.ok) {
                         if (data.messages) app.showDiagnostics(data.messages, data.status === 'infeasible');
                         else alert("Generation failed: " + (data.error || data.detail || JSON.stringify(data)));
                     } else {
@@ -858,7 +1067,7 @@
                             }
                         }
                     }
-                } catch(err) { alert("Network error: " + err.message); }
+                } catch (err) { alert("Network error: " + err.message); }
                 finally { btn.innerHTML = orig; btn.disabled = false; }
             },
 
@@ -910,13 +1119,13 @@
                 if (!confirm("Publish this variant? All other variants will be deleted.")) return;
                 try {
                     const res = await fetch(`${API_URL}/timetables/${id}/approve/`, {
-                        method: 'POST', headers: {'Authorization': `Token ${auth.token}`, 'Content-Type': 'application/json'}
+                        method: 'POST', headers: { 'Authorization': `Token ${auth.token}`, 'Content-Type': 'application/json' }
                     });
                     const data = await res.json();
                     if (!res.ok) { alert(data.error || 'Approval failed'); return; }
                     app.state.currentVariant = id;
                     await app.refreshData();
-                } catch(err) { alert('Error: ' + err.message); }
+                } catch (err) { alert('Error: ' + err.message); }
             },
 
             downloadPdf: (ttId) => {
@@ -970,19 +1179,19 @@
                 if (!subjectId) return alert("Select a subject");
                 try {
                     const res = await fetch(`${API_URL}/pinned-slots/`, {
-                        method: 'POST', headers: {'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}`},
+                        method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` },
                         body: JSON.stringify({ subject: subjectId, day, slot_index: slotIndex, department: app.state.currentDept })
                     });
                     if (!res.ok) throw new Error("Failed");
-                    const pinRes = await fetch(`${API_URL}/pinned-slots/?department=${app.state.currentDept}`, { headers: {'Authorization': `Token ${auth.token}`} });
+                    const pinRes = await fetch(`${API_URL}/pinned-slots/?department=${app.state.currentDept}`, { headers: { 'Authorization': `Token ${auth.token}` } });
                     app.state.pins = await pinRes.json();
                     app.renderPinList();
-                } catch(e) { alert("Error adding pin"); }
+                } catch (e) { alert("Error adding pin"); }
             },
 
             deletePin: async (id) => {
-                await fetch(`${API_URL}/pinned-slots/${id}/`, { method: 'DELETE', headers: {'Authorization': `Token ${auth.token}`} });
-                const pinRes = await fetch(`${API_URL}/pinned-slots/?department=${app.state.currentDept}`, { headers: {'Authorization': `Token ${auth.token}`} });
+                await fetch(`${API_URL}/pinned-slots/${id}/`, { method: 'DELETE', headers: { 'Authorization': `Token ${auth.token}` } });
+                const pinRes = await fetch(`${API_URL}/pinned-slots/?department=${app.state.currentDept}`, { headers: { 'Authorization': `Token ${auth.token}` } });
                 app.state.pins = await pinRes.json();
                 app.renderPinList();
             },
@@ -1004,6 +1213,94 @@
                         <i class="fas ${icon} mr-2 text-${color}-400"></i>${m}
                     </div>`;
                 }).join('');
+            },
+
+            // ═══ DRAG & DROP ═══
+            handleDragStart: (e) => {
+                const tile = e.target.closest('.tt-tile');
+                if (!tile) return;
+                tile.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', JSON.stringify({
+                    slotId: tile.dataset.slotId,
+                    day: tile.dataset.day,
+                    slotIndex: tile.dataset.slotIndex
+                }));
+            },
+
+            handleDragEnd: (e) => {
+                const tile = e.target.closest('.tt-tile');
+                if (tile) tile.classList.remove('dragging');
+                document.querySelectorAll('td.drag-over').forEach(td => td.classList.remove('drag-over'));
+            },
+
+            handleDragOver: (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                const td = e.target.closest('td[data-day]');
+                if (td && !td.classList.contains('drag-over')) td.classList.add('drag-over');
+            },
+
+            handleDragLeave: (e) => {
+                const td = e.target.closest('td[data-day]');
+                if (td) td.classList.remove('drag-over');
+            },
+
+            handleDrop: async (e) => {
+                e.preventDefault();
+                const td = e.target.closest('td[data-day]');
+                if (!td) return;
+                td.classList.remove('drag-over');
+
+                let dragData;
+                try { dragData = JSON.parse(e.dataTransfer.getData('text/plain')); } catch { return; }
+
+                const targetDay = td.dataset.day;
+                const targetSlotIndex = parseInt(td.dataset.slotIndex);
+                const srcSlotId = dragData.slotId;
+
+                // Dropped on same cell?
+                if (dragData.day === targetDay && parseInt(dragData.slotIndex) === targetSlotIndex) return;
+
+                // Is there a tile in the target cell?
+                const targetTile = td.querySelector('.tt-tile');
+                if (targetTile) {
+                    // Swap with target tile
+                    const targetSlotId = targetTile.dataset.slotId;
+                    await app.swapSlots(srcSlotId, targetSlotId);
+                } else {
+                    // Move to empty cell
+                    await app.moveSlot(srcSlotId, targetDay, targetSlotIndex);
+                }
+
+                td.classList.add('drop-success');
+                setTimeout(() => td.classList.remove('drop-success'), 600);
+            },
+
+            swapSlots: async (slotAId, slotBId) => {
+                try {
+                    const res = await fetch(`${API_URL}/slots/swap/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` },
+                        body: JSON.stringify({ slot_a_id: slotAId, slot_b_id: slotBId })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) { alert(data.error || 'Swap failed'); return; }
+                    await app.refreshTimetable();
+                } catch (err) { alert('Swap error: ' + err.message); }
+            },
+
+            moveSlot: async (slotId, targetDay, targetSlotIndex) => {
+                try {
+                    const res = await fetch(`${API_URL}/slots/swap/`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` },
+                        body: JSON.stringify({ slot_id: slotId, target_day: targetDay, target_slot_index: targetSlotIndex })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) { alert(data.error || 'Move failed'); return; }
+                    await app.refreshTimetable();
+                } catch (err) { alert('Move error: ' + err.message); }
             }
         };
 
@@ -1105,13 +1402,13 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             ${[
-                                { icon: 'fa-microchip', color: 'atlas-teal', title: 'Constraint-Based AI', desc: 'Powered by Google OR-Tools CP-SAT solver. Handles teacher conflicts, room capacity, batch splits, and time preferences — all simultaneously.' },
-                                { icon: 'fa-bolt', color: 'amber-400', title: 'Instant Generation', desc: 'Full weekly timetables for entire departments generated in under 30 seconds. No more days of manual shuffling in spreadsheets.' },
-                                { icon: 'fa-users-between-lines', color: 'purple-400', title: 'Smart Lab Splitting', desc: 'Automatically splits batches for lab sessions. Lab A gets one subject while Lab B gets another — different rooms, different professors, same slot.' },
-                                { icon: 'fa-shield-halved', color: 'pink-400', title: 'Zero Conflicts', desc: 'Hard constraints guarantee no teacher double-bookings, no room overlaps, and no student batch collisions. Mathematically proven.' },
-                                { icon: 'fa-chart-line', color: 'emerald-400', title: 'Optimized Schedules', desc: 'Prefers early, compact timetables. Minimizes gaps in student days and respects faculty availability windows.' },
-                                { icon: 'fa-lock', color: 'sky-400', title: 'Role-Based Access', desc: 'Admins manage everything. Faculty see only their own schedule. Token-based auth keeps data secure and access controlled.' },
-                            ].map((f, i) => `
+                    { icon: 'fa-microchip', color: 'atlas-teal', title: 'Constraint-Based AI', desc: 'Powered by Google OR-Tools CP-SAT solver. Handles teacher conflicts, room capacity, batch splits, and time preferences — all simultaneously.' },
+                    { icon: 'fa-bolt', color: 'amber-400', title: 'Instant Generation', desc: 'Full weekly timetables for entire departments generated in under 30 seconds. No more days of manual shuffling in spreadsheets.' },
+                    { icon: 'fa-users-between-lines', color: 'purple-400', title: 'Smart Lab Splitting', desc: 'Automatically splits batches for lab sessions. Lab A gets one subject while Lab B gets another — different rooms, different professors, same slot.' },
+                    { icon: 'fa-shield-halved', color: 'pink-400', title: 'Zero Conflicts', desc: 'Hard constraints guarantee no teacher double-bookings, no room overlaps, and no student batch collisions. Mathematically proven.' },
+                    { icon: 'fa-chart-line', color: 'emerald-400', title: 'Optimized Schedules', desc: 'Prefers early, compact timetables. Minimizes gaps in student days and respects faculty availability windows.' },
+                    { icon: 'fa-lock', color: 'sky-400', title: 'Role-Based Access', desc: 'Admins manage everything. Faculty see only their own schedule. Token-based auth keeps data secure and access controlled.' },
+                ].map((f, i) => `
                                 <div class="glass-card rounded-2xl p-7 feature-card group" data-index="${i}">
                                     <div class="w-12 h-12 rounded-2xl bg-${f.color}/10 flex items-center justify-center mb-5 text-${f.color} text-lg pulse-icon transition-all group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-${f.color}/20">
                                         <i class="fas ${f.icon}"></i>
@@ -1220,5 +1517,5 @@
         });
     </script>
 </body>
-</html>
 
+</html>
