@@ -5,7 +5,7 @@ from .views import (
     StudentBatchViewSet, DepartmentViewSet,
     GeneratedTimetableViewSet, TimetableSlotViewSet,
     PinnedSlotViewSet,
-    trigger_generation, approve_timetable, export_timetable_pdf
+    trigger_generation, approve_timetable, export_timetable_pdf, swap_slots
 )
 
 router = DefaultRouter()
@@ -19,8 +19,9 @@ router.register(r'slots', TimetableSlotViewSet)
 router.register(r'pinned-slots', PinnedSlotViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('slots/swap/', swap_slots, name='swap-slots'),
     path('generate/', trigger_generation, name='generate-timetable'),
     path('timetables/<int:pk>/approve/', approve_timetable, name='approve-timetable'),
     path('timetables/<int:pk>/pdf/', export_timetable_pdf, name='export-timetable-pdf'),
+    path('', include(router.urls)),
 ]

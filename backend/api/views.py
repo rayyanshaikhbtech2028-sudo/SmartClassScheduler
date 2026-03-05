@@ -204,11 +204,116 @@ def approve_timetable(request, pk):
     return Response({"status": "success", "message": f"Variant {tt.variant_number} published! All other variants deleted."})
 
 
+# --- SWAP / MOVE SLOTS ---
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def swap_slots(request):
+    if not request.user.is_staff:
+        return Response({"error": "Only admins can swap slots"}, status=403)
+
+    slot_a_id = request.data.get('slot_a_id')
+    slot_b_id = request.data.get('slot_b_id')
+    slot_id = request.data.get('slot_id')
+    target_day = request.data.get('target_day')
+    target_slot_index = request.data.get('target_slot_index')
+
+    TIME_SLOT_MAP = {
+        0: ("07:30", "08:30"),
+        1: ("08:30", "09:30"),
+        2: ("10:00", "11:00"),
+        3: ("11:00", "12:00"),
+        4: ("12:00", "13:00"),
+        5: ("13:00", "14:00"),
+        6: ("14:00", "15:00"),
+        7: ("15:00", "16:00"),
+    }
+
+    # --- Case 1: Swap two slots ---
+    if slot_a_id and slot_b_id:
+        try:
+            slot_a = TimetableSlot.objects.get(id=slot_a_id)
+            slot_b = TimetableSlot.objects.get(id=slot_b_id)
+        except TimetableSlot.DoesNotExist:
+            return Response({"error": "Slot not found"}, status=404)
+
+        if slot_a.timetable_id != slot_b.timetable_id:
+            return Response({"error": "Slots must belong to the same timetable"}, status=400)
+
+        # Check if either slot is pinned
+        time_keys = ["07:30", "08:30", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"]
+        for s in [slot_a, slot_b]:
+            s_time_key = s.start_time.strftime("%H:%M")
+            s_idx = time_keys.index(s_time_key) if s_time_key in time_keys else -1
+            if PinnedSlot.objects.filter(subject=s.subject, day=s.day, slot_index=s_idx).exists():
+                return Response({"error": f"Cannot move '{s.subject.name}' — it is a fixed slot"}, status=400)
+
+        # Swap day, start_time, end_time, room
+        slot_a.day, slot_b.day = slot_b.day, slot_a.day
+        slot_a.start_time, slot_b.start_time = slot_b.start_time, slot_a.start_time
+        slot_a.end_time, slot_b.end_time = slot_b.end_time, slot_a.end_time
+        slot_a.room, slot_b.room = slot_b.room, slot_a.room
+        slot_a.save()
+        slot_b.save()
+
+        return Response({
+            "status": "success",
+            "slots": [
+                TimetableSlotSerializer(slot_a).data,
+                TimetableSlotSerializer(slot_b).data,
+            ]
+        })
+
+    # --- Case 2: Move slot to empty cell ---
+    if slot_id and target_day is not None and target_slot_index is not None:
+        try:
+            slot = TimetableSlot.objects.get(id=slot_id)
+        except TimetableSlot.DoesNotExist:
+            return Response({"error": "Slot not found"}, status=404)
+
+        # Check if slot is pinned
+        time_keys_move = ["07:30", "08:30", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"]
+        s_time_key = slot.start_time.strftime("%H:%M")
+        s_idx = time_keys_move.index(s_time_key) if s_time_key in time_keys_move else -1
+        if PinnedSlot.objects.filter(subject=slot.subject, day=slot.day, slot_index=s_idx).exists():
+            return Response({"error": f"Cannot move '{slot.subject.name}' — it is a fixed slot"}, status=400)
+
+        idx = int(target_slot_index)
+        if idx not in TIME_SLOT_MAP:
+            return Response({"error": "Invalid slot index"}, status=400)
+
+        start_str, end_str = TIME_SLOT_MAP[idx]
+        from datetime import time as dt_time
+        slot.day = target_day
+        slot.start_time = dt_time(*map(int, start_str.split(":")))
+        slot.end_time = dt_time(*map(int, end_str.split(":")))
+        slot.save()
+
+        return Response({
+            "status": "success",
+            "slots": [TimetableSlotSerializer(slot).data]
+        })
+
+    return Response({"error": "Provide either (slot_a_id, slot_b_id) or (slot_id, target_day, target_slot_index)"}, status=400)
+
+
 # --- PDF EXPORT ---
 @csrf_exempt
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
 def export_timetable_pdf(request, pk):
+    # Accept token from query param since window.open() can't send headers
+    token_key = request.query_params.get('token')
+    if not token_key:
+        auth_header = request.META.get('HTTP_AUTHORIZATION', '')
+        if auth_header.startswith('Token '):
+            token_key = auth_header.split(' ', 1)[1]
+    if not token_key:
+        return Response({"error": "Authentication required. Pass ?token=<your_token>"}, status=401)
+    try:
+        token_obj = Token.objects.get(key=token_key)
+        request.user = token_obj.user
+    except Token.DoesNotExist:
+        return Response({"error": "Invalid token"}, status=401)
     try:
         from reportlab.lib import colors
         from reportlab.lib.pagesizes import A4, landscape
@@ -260,8 +365,33 @@ def export_timetable_pdf(request, pk):
     doc = SimpleDocTemplate(buffer, pagesize=landscape(A4), topMargin=0.5 * inch, bottomMargin=0.5 * inch)
 
     styles = getSampleStyleSheet()
-    cell_style = ParagraphStyle('Cell', parent=styles['Normal'], fontSize=7, leading=9)
-    header_style = ParagraphStyle('Header', parent=styles['Normal'], fontSize=8, leading=10, textColor=colors.white)
+
+    # Clean, readable styles
+    cell_style = ParagraphStyle(
+        'Cell', parent=styles['Normal'],
+        fontSize=7.5, leading=10, textColor=colors.HexColor('#1e293b'),
+        alignment=1  # CENTER
+    )
+    time_style = ParagraphStyle(
+        'TimeCell', parent=styles['Normal'],
+        fontSize=7.5, leading=10, textColor=colors.HexColor('#475569'),
+        alignment=1, fontName='Helvetica-Bold'
+    )
+    header_style = ParagraphStyle(
+        'Header', parent=styles['Normal'],
+        fontSize=9, leading=11, textColor=colors.white,
+        alignment=1, fontName='Helvetica-Bold'
+    )
+    title_style = ParagraphStyle(
+        'CustomTitle', parent=styles['Title'],
+        fontSize=16, leading=20, textColor=colors.HexColor('#0f172a'),
+        spaceAfter=4, alignment=1
+    )
+    subtitle_style = ParagraphStyle(
+        'Subtitle', parent=styles['Normal'],
+        fontSize=8, leading=10, textColor=colors.HexColor('#64748b'),
+        alignment=1
+    )
 
     # Determine title
     title_parts = [tt.department.name]
@@ -273,39 +403,65 @@ def export_timetable_pdf(request, pk):
         teacher_obj = Teacher.objects.filter(id=teacher_id).first()
         if teacher_obj:
             title_parts.append(teacher_obj.name)
-    title_parts.append(f"Variant {tt.variant_number}" if tt.status == 'DRAFT' else 'Published')
+    status_label = f"Variant {tt.variant_number}" if tt.status == 'DRAFT' else 'Published'
 
-    title = Paragraph(f"<b>{'  —  '.join(title_parts)}</b>", styles['Title'])
+    title = Paragraph(f"<b>{'  —  '.join(title_parts)}</b>", title_style)
+    subtitle = Paragraph(f"{status_label}  •  Generated by ATLAS", subtitle_style)
 
-    header_row = [Paragraph('<b>Time</b>', header_style)] + [Paragraph(f'<b>{d}</b>', header_style) for d in days]
+    header_row = [Paragraph('<b>TIME</b>', header_style)] + [Paragraph(f'<b>{d}</b>', header_style) for d in days]
 
     data = [header_row]
     for i, row in enumerate(matrix):
-        cells = [Paragraph(f'<b>{time_labels[i]}</b>', cell_style)]
+        cells = [Paragraph(f'<b>{time_labels[i]}</b>', time_style)]
         for cell_entries in row:
             if cell_entries:
-                cells.append(Paragraph('<br/>---<br/>'.join(cell_entries), cell_style))
+                formatted = []
+                for entry in cell_entries:
+                    parts = entry.split('\n')
+                    subj = f'<b>{parts[0]}</b>' if len(parts) > 0 else ''
+                    teacher = f'<br/><i><font color="#475569">{parts[1]}</font></i>' if len(parts) > 1 else ''
+                    room = f'<br/><font color="#64748b" size="6">{parts[2]}</font>' if len(parts) > 2 else ''
+                    formatted.append(f'{subj}{teacher}{room}')
+                cells.append(Paragraph('<br/>'.join(formatted), cell_style))
             else:
-                cells.append('')
+                cells.append(Paragraph('<font color="#cbd5e1">—</font>', cell_style))
         data.append(cells)
 
     col_widths = [80] + [130] * 5
     table = Table(data, colWidths=col_widths)
+
+    # Clean teal header, white body, light alternating rows
+    teal = colors.HexColor('#0d9488')
+    teal_dark = colors.HexColor('#0f766e')
+    light_gray = colors.HexColor('#f8fafc')
+    border_color = colors.HexColor('#e2e8f0')
+
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#0f172a')),
+        # Header row
+        ('BACKGROUND', (0, 0), (-1, 0), teal),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+
+        # Time column
+        ('BACKGROUND', (0, 1), (0, -1), colors.HexColor('#f1f5f9')),
+
+        # Alternating row backgrounds
+        ('ROWBACKGROUNDS', (1, 1), (-1, -1), [colors.white, light_gray]),
+
+        # Grid and borders
+        ('GRID', (0, 0), (-1, -1), 0.5, border_color),
+        ('LINEBELOW', (0, 0), (-1, 0), 1.5, teal_dark),
+        ('LINEAFTER', (0, 0), (0, -1), 1, colors.HexColor('#cbd5e1')),
+
+        # Alignment and padding
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-        ('FONTSIZE', (0, 0), (-1, -1), 7),
-        ('GRID', (0, 0), (-1, -1), 0.5, colors.HexColor('#334155')),
-        ('BACKGROUND', (0, 1), (0, -1), colors.HexColor('#1e293b')),
-        ('TEXTCOLOR', (0, 1), (0, -1), colors.HexColor('#94a3b8')),
-        ('ROWBACKGROUNDS', (1, 1), (-1, -1), [colors.HexColor('#0f172a'), colors.HexColor('#1e293b')]),
-        ('TOPPADDING', (0, 0), (-1, -1), 6),
-        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
     ]))
 
-    elements = [title, Spacer(1, 12), table]
+    elements = [title, subtitle, Spacer(1, 14), table]
     doc.build(elements)
 
     buffer.seek(0)
