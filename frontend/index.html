@@ -385,6 +385,454 @@
         td.drop-success {
             animation: drop-flash 0.6s ease-out forwards;
         }
+
+        /* ── Light Mode ── */
+        body.light-mode {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        /* Glass layers */
+        .light-mode .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .light-mode .glass-heavy {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(24px);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-mode .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.06);
+        }
+
+        .light-mode .glass-card:hover {
+            border-color: rgba(13, 148, 136, 0.35);
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(13, 148, 136, 0.1);
+            transform: translateY(-8px) scale(1.01);
+        }
+
+        .light-mode .glass-card::before {
+            background: linear-gradient(135deg, rgba(13, 148, 136, 0.06) 0%, transparent 50%, rgba(79, 70, 229, 0.04) 100%);
+        }
+
+        /* Gradient text — deeper for white backgrounds */
+        .light-mode .text-gradient {
+            background: linear-gradient(135deg, #0d9488 0%, #4f46e5 40%, #7c3aed 70%, #0d9488 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Buttons */
+        .light-mode .btn-primary {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 50%, #115e59 100%);
+            box-shadow: 0 4px 20px -5px rgba(13, 148, 136, 0.35);
+            color: white !important;
+        }
+
+        .light-mode .btn-primary:hover {
+            box-shadow: 0 8px 30px -5px rgba(13, 148, 136, 0.45);
+        }
+
+        .light-mode .btn-primary .text-white,
+        .light-mode .btn-primary {
+            color: white !important;
+            -webkit-text-fill-color: white;
+        }
+
+        .light-mode .btn-glass {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: #334155;
+        }
+
+        .light-mode .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.85);
+            border-color: rgba(13, 148, 136, 0.3);
+        }
+
+        /* Inputs */
+        .light-mode .custom-input {
+            background: #f8fafc;
+            border-color: rgba(0, 0, 0, 0.12);
+            color: #1e293b;
+        }
+
+        .light-mode .custom-input:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12), 0 0 15px -5px rgba(13, 148, 136, 0.15);
+        }
+
+        .light-mode select {
+            color: #1e293b;
+        }
+
+        .light-mode option {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        /* Stats glow */
+        .light-mode .stat-glow {
+            text-shadow: 0 0 20px rgba(13, 148, 136, 0.3), 0 0 40px rgba(13, 148, 136, 0.1);
+        }
+
+        .light-mode .text-atlas-teal {
+            color: #0d9488;
+        }
+
+        /* Nav */
+        .light-mode .nav-link {
+            color: #475569;
+        }
+
+        .light-mode .nav-link.active {
+            color: #0d9488;
+        }
+
+        .light-mode .nav-link::after {
+            background: linear-gradient(90deg, #0d9488, #4f46e5);
+        }
+
+        .light-mode .glow-border::after {
+            background: linear-gradient(135deg, #0d9488, #4f46e5, #7c3aed, #0d9488);
+        }
+
+        /* Text colors */
+        .light-mode .text-slate-400 {
+            color: #64748b;
+        }
+
+        .light-mode .text-slate-500 {
+            color: #475569;
+        }
+
+        .light-mode .text-slate-600 {
+            color: #334155;
+        }
+
+        /* Text colors — exclude elements on gradient backgrounds */
+        .light-mode .text-white {
+            color: #0f172a;
+        }
+
+        /* Keep text white on gradient/colored backgrounds */
+        .light-mode .btn-primary,
+        .light-mode .btn-primary *,
+        .light-mode .btn-primary .text-white,
+        .light-mode button[class*="bg-gradient"],
+        .light-mode button[class*="bg-gradient"] *,
+        .light-mode .bg-gradient-to-r,
+        .light-mode .bg-gradient-to-r * {
+            color: white !important;
+            -webkit-text-fill-color: white !important;
+        }
+
+        .light-mode .font-bold.text-white {
+            color: #0f172a;
+        }
+
+        .light-mode h1,
+        .light-mode h2,
+        .light-mode h3 {
+            color: #0f172a;
+        }
+
+        .light-mode p {
+            color: #475569;
+        }
+
+        /* Section overlays — fix the "Why use this" gradient */
+        .light-mode .from-transparent.via-slate-900\/50.to-transparent {
+            background: linear-gradient(to bottom, transparent, rgba(241, 245, 249, 0.6), transparent) !important;
+        }
+
+        .light-mode .from-atlas-teal\/\[0\.04\] {
+            --tw-gradient-from: rgba(13, 148, 136, 0.03);
+        }
+
+        /* Sidebar tab buttons — active gradient tab keeps white text */
+        .light-mode .shadow-lg.shadow-atlas-teal\/10 {
+            box-shadow: 0 4px 15px -3px rgba(13, 148, 136, 0.25);
+        }
+
+        /* Non-active tab in sidebar */
+        .light-mode button.bg-white\/\[0\.03\] {
+            background: rgba(0, 0, 0, 0.03);
+            color: #475569;
+        }
+
+        .light-mode button.bg-white\/\[0\.03\]:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        /* Feature cards icon backgrounds */
+        .light-mode [class*="bg-"][class*="/10"] {
+            opacity: 0.9;
+        }
+
+        /* ADMIN badge keep visible */
+        .light-mode .bg-atlas-teal\/\[0\.06\] {
+            background: rgba(13, 148, 136, 0.1);
+        }
+
+        .light-mode .border-atlas-teal\/15 {
+            border-color: rgba(13, 148, 136, 0.2);
+        }
+
+        /* Timetable */
+        .light-mode tr.hover-row:hover td {
+            background-color: rgba(13, 148, 136, 0.04);
+        }
+
+        .light-mode .bg-black\/20 {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .light-mode th {
+            color: #475569 !important;
+        }
+
+        /* Backgrounds */
+        .light-mode #app {
+            background: #f1f5f9;
+        }
+
+        .light-mode .bg-\[\#0a0f1e\] {
+            background: #f1f5f9;
+        }
+
+        .light-mode .bg-\[\#0c1122\]\/80 {
+            background: rgba(255, 255, 255, 0.88);
+        }
+
+        .light-mode .bg-\[\#0c1122\]\/90 {
+            background: rgba(255, 255, 255, 0.94);
+        }
+
+        .light-mode .page-transition {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+        }
+
+        /* Borders */
+        .light-mode .border-white\/\[0\.04\] {
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+
+        .light-mode .border-white\/\[0\.03\] {
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .light-mode .border-white\/5 {
+            border-color: rgba(0, 0, 0, 0.06);
+        }
+
+        .light-mode .border-white\/10 {
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .light-mode .border-atlas-teal\/20 {
+            border-color: rgba(13, 148, 136, 0.2);
+        }
+
+        .light-mode .border-atlas-teal\/50 {
+            border-color: rgba(13, 148, 136, 0.3);
+        }
+
+        /* Sidebar data cards */
+        .light-mode .border-l-2.border-atlas-teal\/50 {
+            border-left-color: rgba(13, 148, 136, 0.5);
+        }
+
+        .light-mode .border-l-2.border-purple-500\/50 {
+            border-left-color: rgba(139, 92, 246, 0.5);
+        }
+
+        /* Background decorative elements */
+        .light-mode .animate-blob {
+            opacity: 0.3;
+        }
+
+        .light-mode .grid-bg {
+            background-image: linear-gradient(rgba(13, 148, 136, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(13, 148, 136, 0.06) 1px, transparent 1px);
+        }
+
+        /* Scrollbar */
+        .light-mode ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0d9488 0%, #4f46e5 100%);
+        }
+
+        .light-mode ::-webkit-scrollbar-track {
+            background: #e2e8f0;
+        }
+
+        /* Badges & pills */
+        .light-mode .bg-atlas-teal\/10 {
+            background: rgba(13, 148, 136, 0.1);
+        }
+
+        .light-mode .bg-atlas-teal\/\[0\.06\] {
+            background: rgba(13, 148, 136, 0.08);
+        }
+
+        .light-mode .bg-white\/\[0\.04\] {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .light-mode .bg-white\/\[0\.03\] {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .light-mode .bg-white\/\[0\.08\] {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Login overlay — light mode */
+        .light-mode #login-overlay {
+            background: rgba(241, 245, 249, 0.85);
+            backdrop-filter: blur(20px);
+        }
+
+        .light-mode #login-overlay .glass-heavy {
+            background: rgba(255, 255, 255, 0.92);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
+        }
+
+        .light-mode #login-overlay .absolute.h-\[2px\] {
+            opacity: 0.8;
+        }
+
+        .light-mode #login-overlay .absolute.bg-atlas-teal\/5,
+        .light-mode #login-overlay .absolute.bg-indigo-500\/5 {
+            opacity: 0.4;
+        }
+
+        .light-mode #login-overlay h2 {
+            color: #0d9488 !important;
+        }
+
+        .light-mode #login-overlay .text-white {
+            color: #0f172a;
+        }
+
+        .light-mode #login-overlay p,
+        .light-mode #login-overlay .text-slate-500 {
+            color: #64748b;
+        }
+
+        .light-mode #login-overlay .text-atlas-teal {
+            color: #0d9488;
+        }
+
+        .light-mode #login-overlay label,
+        .light-mode #login-overlay .text-\[10px\] {
+            color: #475569 !important;
+        }
+
+        .light-mode #login-overlay .custom-input {
+            background: #f8fafc;
+            border-color: rgba(0, 0, 0, 0.12);
+            color: #1e293b;
+        }
+
+        .light-mode #login-overlay .custom-input:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+        }
+
+        .light-mode #login-overlay .custom-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .light-mode #login-overlay .btn-primary {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 50%, #115e59 100%);
+            color: white !important;
+            -webkit-text-fill-color: white !important;
+        }
+
+        .light-mode #login-overlay button:not(.btn-primary) {
+            color: #64748b;
+        }
+
+        .light-mode #login-overlay button:not(.btn-primary):hover {
+            color: #0d9488;
+        }
+
+        /* Other modals stay dark */
+        .light-mode #add-modal .text-white,
+        .light-mode #diag-modal .text-white,
+        .light-mode #pin-modal .text-white {
+            color: white;
+        }
+
+        .light-mode #add-modal .glass-heavy,
+        .light-mode #diag-modal .glass-heavy,
+        .light-mode #pin-modal .glass-heavy {
+            background: rgba(15, 23, 42, 0.85);
+        }
+
+        .light-mode #add-modal h3,
+        .light-mode #diag-modal h3,
+        .light-mode #pin-modal h3 {
+            color: white;
+        }
+
+        .light-mode #add-modal .custom-input,
+        .light-mode #pin-modal .custom-input,
+        .light-mode #pin-modal select {
+            background: rgba(10, 15, 30, 0.8);
+            color: white;
+            border-color: rgba(45, 212, 191, 0.15);
+        }
+
+        /* Theme toggle pill */
+        .theme-toggle {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: rgba(45, 212, 191, 0.4);
+        }
+
+        .theme-toggle .toggle-knob {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2dd4bf, #14b8a6);
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+        }
+
+        .light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.06);
+            border-color: rgba(0, 0, 0, 0.12);
+        }
+
+        .light-mode .theme-toggle .toggle-knob {
+            transform: translateX(20px);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
     </style>
 </head>
 
@@ -514,6 +962,9 @@
                         class="nav-link active text-sm font-medium hover:text-atlas-teal transition-colors">Product</button>
                     <button onclick="router.navigate('dashboard')" id="nav-dashboard"
                         class="nav-link text-sm font-medium hover:text-atlas-teal transition-colors">Dashboard</button>
+                    <div class="theme-toggle" onclick="themeToggle.toggle()" title="Toggle light/dark mode">
+                        <div class="toggle-knob"><i class="fas fa-moon" id="theme-icon"></i></div>
+                    </div>
                     <div id="nav-auth-container">
                         <button onclick="auth.openLogin()"
                             class="btn-primary text-white px-6 py-2.5 rounded-full text-sm font-medium">Login</button>
@@ -738,7 +1189,7 @@
                                 const dlBtn = document.getElementById('pdf-download-btn');
                                 if (dlBtn) {
                                     dlBtn.classList.remove('hidden');
-                                    dlBtn.onclick = () => window.open(`${API_URL}/timetables/${tts[0].id}/pdf/?teacher=${auth.user.teacher_id}`, '_blank');
+                                    dlBtn.onclick = () => window.open(`${API_URL}/timetables/${tts[0].id}/pdf/?teacher=${auth.user.teacher_id}&token=${auth.token}`, '_blank');
                                 }
                             }
                         }
@@ -951,9 +1402,12 @@
                                 const batchName = cell.batch_name || `Batch ${cell.batch}`;
                                 const teacherName = cell.teacher_name || '';
                                 const shortBatch = batchName.includes(' - Lab') ? batchName.split(' - ')[1] : batchName;
-                                const dragAttrs = isAdmin ? `draggable="true" ondragstart="app.handleDragStart(event)" ondragend="app.handleDragEnd(event)"` : '';
-                                html += `<div style="background:${c.bg};border:1px solid ${c.border}" class="tt-tile rounded-lg p-2.5 text-xs transition-all duration-300 hover:scale-[1.03] hover:shadow-lg" data-slot-id="${cell.id}" data-day="${cellDay}" data-slot-index="${i}" ${dragAttrs}>
-                                    <div class="font-bold leading-tight line-clamp-1" style="color:${c.text}">${subName}</div>
+                                const isPinned = (app.state.pins || []).some(p => p.subject == cell.subject && p.day === cellDay && p.slot_index == i);
+                                const dragAttrs = isAdmin && !isPinned ? `draggable="true" ondragstart="app.handleDragStart(event)" ondragend="app.handleDragEnd(event)"` : '';
+                                const pinnedAttr = isPinned ? `data-pinned="true"` : '';
+                                const pinBadge = isPinned ? `<span class="text-[9px] text-amber-400 ml-1" title="Fixed slot"><i class="fas fa-thumbtack"></i></span>` : '';
+                                html += `<div style="background:${c.bg};border:1px solid ${isPinned ? 'rgba(251,191,36,0.4)' : c.border}" class="tt-tile rounded-lg p-2.5 text-xs transition-all duration-300 hover:scale-[1.03] hover:shadow-lg" data-slot-id="${cell.id}" data-day="${cellDay}" data-slot-index="${i}" ${dragAttrs} ${pinnedAttr}>
+                                    <div class="font-bold leading-tight line-clamp-1" style="color:${c.text}">${subName}${pinBadge}</div>
                                     ${isAdmin && teacherName ? `<div class="text-[10px] text-slate-400 mt-1"><i class="fas fa-user mr-1 opacity-50"></i>${teacherName}</div>` : ''}
                                     <div class="text-[10px] text-slate-400 flex justify-between items-end mt-1.5">
                                         <span><i class="fas fa-door-open mr-1 opacity-40"></i>${roomName}</span>
@@ -1129,7 +1583,7 @@
             },
 
             downloadPdf: (ttId) => {
-                let url = `${API_URL}/timetables/${ttId}/pdf/?`;
+                let url = `${API_URL}/timetables/${ttId}/pdf/?token=${auth.token}&`;
                 if (app.state.currentBatch) url += `batch=${app.state.currentBatch}&`;
                 window.open(url, '_blank');
             },
@@ -1219,6 +1673,11 @@
             handleDragStart: (e) => {
                 const tile = e.target.closest('.tt-tile');
                 if (!tile) return;
+                if (tile.dataset.pinned === 'true') {
+                    e.preventDefault();
+                    alert('📌 This is a fixed slot and cannot be moved.');
+                    return;
+                }
                 tile.classList.add('dragging');
                 e.dataTransfer.effectAllowed = 'move';
                 e.dataTransfer.setData('text/plain', JSON.stringify({
@@ -1265,6 +1724,10 @@
                 // Is there a tile in the target cell?
                 const targetTile = td.querySelector('.tt-tile');
                 if (targetTile) {
+                    if (targetTile.dataset.pinned === 'true') {
+                        alert('📌 Cannot swap with a fixed slot.');
+                        return;
+                    }
                     // Swap with target tile
                     const targetSlotId = targetTile.dataset.slotId;
                     await app.swapSlots(srcSlotId, targetSlotId);
@@ -1509,9 +1972,31 @@
                 </div>`
         };
 
+        // ═══ THEME TOGGLE ═══
+        const themeToggle = {
+            isLight: false,
+            toggle: () => {
+                themeToggle.isLight = !themeToggle.isLight;
+                themeToggle.apply();
+                localStorage.setItem('atlas-theme', themeToggle.isLight ? 'light' : 'dark');
+            },
+            apply: () => {
+                document.body.classList.toggle('light-mode', themeToggle.isLight);
+                const icon = document.getElementById('theme-icon');
+                if (icon) {
+                    icon.className = themeToggle.isLight ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            },
+            init: () => {
+                themeToggle.isLight = localStorage.getItem('atlas-theme') === 'light';
+                themeToggle.apply();
+            }
+        };
+
         // ═══ BOOT ═══
         window.addEventListener('DOMContentLoaded', () => {
             gsap.registerPlugin(ScrollTrigger);
+            themeToggle.init();
             auth.updateNav();
             router.navigate('home');
         });
