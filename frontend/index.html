@@ -1053,6 +1053,47 @@
         </div>
     </div>
 
+    <!-- ═══ Edit Class Modal ═══ -->
+    <div id="edit-slot-modal"
+        class="fixed inset-0 z-[200] bg-black/80 backdrop-blur-2xl flex items-center justify-center hidden">
+        <div class="glass-heavy p-8 rounded-3xl w-full max-w-md shadow-2xl relative border border-white/10">
+            <div
+                class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-atlas-teal to-transparent">
+            </div>
+            <button onclick="app.closeEditSlotModal()"
+                class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center text-slate-400 hover:text-atlas-teal hover:border-atlas-teal/30 transition-all">
+                <i class="fas fa-times text-sm"></i>
+            </button>
+            <div class="text-center mb-5">
+                <div
+                    class="w-14 h-14 bg-gradient-to-br from-atlas-teal/20 to-indigo-500/20 rounded-2xl mx-auto flex items-center justify-center text-xl text-atlas-teal mb-3 border border-atlas-teal/20">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h3 class="text-xl font-bold font-exo text-white">Edit Class</h3>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1" id="edit-slot-time">Mon 10:00 - 11:00</p>
+                <p class="text-xs font-mono text-slate-400 mt-0.5" id="edit-slot-batch">Batch A • Room 101</p>
+            </div>
+            
+            <form onsubmit="app.submitEditSlot(event)" class="space-y-4">
+                <input type="hidden" id="edit-slot-id">
+                <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-1 block">Subject</label>
+                    <select id="edit-slot-subject" class="custom-input text-sm" required>
+                        <option value="">Select Subject</option>
+                    </select>
+                </div>
+                <div class="pb-1">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-1 block">Faculty</label>
+                    <select id="edit-slot-teacher" class="custom-input text-sm" required>
+                        <option value="">Select Faculty</option>
+                    </select>
+                </div>
+                <button type="submit"
+                    class="w-full py-3 btn-primary rounded-xl font-bold text-sm text-white">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const API_URL = 'http://127.0.0.1:8000/api';
 
@@ -1431,8 +1472,11 @@
                                 const dragAttrs = isAdmin && !isPinned ? `draggable="true" ondragstart="app.handleDragStart(event)" ondragend="app.handleDragEnd(event)"` : '';
                                 const pinnedAttr = isPinned ? `data-pinned="true"` : '';
                                 const pinBadge = isPinned ? `<span class="text-[9px] text-amber-400 ml-1" title="Fixed slot"><i class="fas fa-thumbtack"></i></span>` : '';
-                                html += `<div style="background:${c.bg};border:1px solid ${isPinned ? 'rgba(251,191,36,0.4)' : c.border}" class="tt-tile rounded-lg p-2.5 text-xs transition-all duration-300 hover:scale-[1.03] hover:shadow-lg" data-slot-id="${cell.id}" data-day="${cellDay}" data-slot-index="${i}" ${dragAttrs} ${pinnedAttr}>
-                                    <div class="font-bold leading-tight line-clamp-1" style="color:${c.text}">${subName}${pinBadge}</div>
+                                const editBtn = isAdmin && !isPinned ? `<button onclick="app.openEditSlotModal(${cell.id}, event)" class="absolute top-1 right-1 w-5 h-5 flex items-center justify-center text-slate-400 hover:text-white bg-black/20 hover:bg-black/40 rounded transition-colors opacity-0 group-hover:opacity-100"><i class="fas fa-ellipsis-v text-[10px]"></i></button>` : '';
+
+                                html += `<div style="background:${c.bg};border:1px solid ${isPinned ? 'rgba(251,191,36,0.4)' : c.border}" class="tt-tile rounded-lg p-2.5 text-xs transition-all duration-300 hover:scale-[1.03] hover:shadow-lg relative group" data-slot-id="${cell.id}" data-day="${cellDay}" data-slot-index="${i}" ${dragAttrs} ${pinnedAttr}>
+                                    ${editBtn}
+                                    <div class="font-bold leading-tight pr-4 line-clamp-1" style="color:${c.text}">${subName}${pinBadge}</div>
                                     ${isAdmin && teacherName ? `<div class="text-[10px] text-slate-400 mt-1"><i class="fas fa-user mr-1 opacity-50"></i>${teacherName}</div>` : ''}
                                     <div class="text-[10px] text-slate-400 flex justify-between items-end mt-1.5">
                                         <span><i class="fas fa-door-open mr-1 opacity-40"></i>${roomName}</span>
@@ -2044,6 +2088,91 @@
                     if (!res.ok) { alert(data.error || 'Move failed'); return; }
                     await app.refreshTimetable();
                 } catch (err) { alert('Move error: ' + err.message); }
+            },
+
+            // ═══ EDIT MANUAL OVERRIDES ═══
+            openEditSlotModal: async (slotId, event) => {
+                event.stopPropagation();
+                if (!app.state.currentDept) return;
+                
+                try {
+                    // Fetch slot details
+                    const sRes = await fetch(`${API_URL}/slots/${slotId}/`, { headers: { 'Authorization': `Token ${auth.token}` } });
+                    const slot = await sRes.json();
+                    
+                    const modal = document.getElementById('edit-slot-modal');
+                    modal.classList.remove('hidden');
+                    gsap.from("#edit-slot-modal > div", { y: 30, opacity: 0, scale: 0.95, duration: 0.4, ease: "back.out(1.4)" });
+                    
+                    document.getElementById('edit-slot-id').value = slotId;
+                    
+                    // Display header info
+                    const timeKey = slot.start_time.substring(0, 5);
+                    const slotIndex = TIME_SLOTS.findIndex(ts => ts.label.startsWith(timeKey));
+                    const timeLabel = slotIndex !== -1 ? TIME_SLOTS[slotIndex].label : slot.start_time;
+                    const dayLabel = DAY_LABELS[slot.day] || slot.day;
+                    document.getElementById('edit-slot-time').textContent = `${dayLabel} ${timeLabel}`;
+                    document.getElementById('edit-slot-batch').textContent = `${slot.batch_name || 'Batch'} • ${slot.room_name || 'Room'}`;
+                    
+                    // Populate Subject Select
+                    const subSel = document.getElementById('edit-slot-subject');
+                    subSel.innerHTML = '<option value="">Select Subject</option>';
+                    app.state.subjects.forEach(s => {
+                        const isMatch = s.batch === parseInt(slot.batch) || (!s.batch);
+                        subSel.innerHTML += `<option value="${s.id}" ${s.id === slot.subject ? 'selected' : ''}>${s.name}</option>`;
+                    });
+                    if (!slot.subject) subSel.value = '';
+                    
+                    // Populate Teacher Select
+                    const tSel = document.getElementById('edit-slot-teacher');
+                    tSel.innerHTML = '<option value="">Select Faculty</option>';
+                    app.state.teachers.forEach(t => {
+                        tSel.innerHTML += `<option value="${t.id}" ${t.id === slot.teacher ? 'selected' : ''}>${t.name}</option>`;
+                    });
+                    if (!slot.teacher) tSel.value = '';
+                    
+                } catch (e) {
+                    alert("Error loading slot details");
+                }
+            },
+            
+            closeEditSlotModal: () => {
+                gsap.to("#edit-slot-modal > div", { y: 20, opacity: 0, scale: 0.95, duration: 0.2, ease: "power2.in", onComplete: () => {
+                    document.getElementById('edit-slot-modal').classList.add('hidden');
+                }});
+            },
+            
+            submitEditSlot: async (e) => {
+                e.preventDefault();
+                const slotId = document.getElementById('edit-slot-id').value;
+                const subjectId = document.getElementById('edit-slot-subject').value;
+                const teacherId = document.getElementById('edit-slot-teacher').value;
+                
+                const btn = e.target.querySelector('button[type="submit"]');
+                const prevText = btn.textContent;
+                btn.textContent = 'Saving...';
+                btn.disabled = true;
+                
+                try {
+                    const res = await fetch(`${API_URL}/slots/${slotId}/`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` },
+                        body: JSON.stringify({ subject: subjectId, teacher: teacherId })
+                    });
+                    
+                    if (!res.ok) {
+                        const data = await res.json();
+                        throw new Error(data.error || "Failed to update class");
+                    }
+                    
+                    app.closeEditSlotModal();
+                    await app.refreshTimetable();
+                } catch (err) {
+                    alert('Error updating class: ' + err.message);
+                } finally {
+                    btn.textContent = prevText;
+                    btn.disabled = false;
+                }
             }
         };
 
