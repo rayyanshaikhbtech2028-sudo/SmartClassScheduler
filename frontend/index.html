@@ -1088,6 +1088,12 @@
                         <option value="">Select Faculty</option>
                     </select>
                 </div>
+                <div class="pb-1">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.15em] mb-1 block">Room</label>
+                    <select id="edit-slot-room" class="custom-input text-sm" required>
+                        <option value="">Select Room</option>
+                    </select>
+                </div>
                 <button type="submit"
                     class="w-full py-3 btn-primary rounded-xl font-bold text-sm text-white">Save Changes</button>
             </form>
@@ -1170,7 +1176,7 @@
 
         // ═══ APP CONTROLLER ═══
         const app = {
-            state: { subjects: [], teachers: [], batches: [], currentDept: null, currentBatch: null, variants: [], currentVariant: null, pins: [], conflicts: [], unavailabilities: [] },
+            state: { subjects: [], teachers: [], batches: [], rooms: [], currentDept: null, currentBatch: null, variants: [], currentVariant: null, pins: [], conflicts: [], unavailabilities: [] },
             activeTab: 'subjects',
 
             render: (pageId) => {
@@ -1259,17 +1265,19 @@
                 if (!deptId) return;
                 app.state.currentDept = deptId; app.state.currentBatch = null; app.state.currentVariant = null; app.state.variants = [];
                 try {
-                    const [bRes, tRes, subRes, ttRes, pinRes] = await Promise.all([
+                    const [bRes, tRes, subRes, ttRes, pinRes, rRes] = await Promise.all([
                         fetch(`${API_URL}/batches/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/teachers/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/subjects/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/timetables/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/pinned-slots/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/rooms/`, { headers: { 'Authorization': `Token ${auth.token}` } })
                     ]);
-                    const [batches, teachers, subjects, timetables, pins] = await Promise.all([bRes.json(), tRes.json(), subRes.json(), ttRes.json(), pinRes.json()]);
+                    const [batches, teachers, subjects, timetables, pins, rooms] = await Promise.all([bRes.json(), tRes.json(), subRes.json(), ttRes.json(), pinRes.json(), rRes.json()]);
                     app.state.batches = batches.filter(x => x.department == deptId);
                     app.state.teachers = teachers.filter(x => x.department == deptId);
                     app.state.subjects = subjects.filter(x => x.department == deptId);
+                    app.state.rooms = rooms;
                     app.state.variants = timetables;
                     app.state.pins = pins;
                     const mainBatches = app.state.batches.filter(b => !b.parent_batch);
@@ -1331,17 +1339,19 @@
                 const deptId = auth.user.is_admin ? document.getElementById('dept-select').value : auth.user.department_id;
                 if (!deptId) return; app.state.currentDept = deptId;
                 if (auth.user.is_admin) {
-                    const [bRes, tRes, subRes, ttRes, pinRes] = await Promise.all([
+                    const [bRes, tRes, subRes, ttRes, pinRes, rRes] = await Promise.all([
                         fetch(`${API_URL}/batches/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/teachers/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/subjects/`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/timetables/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
                         fetch(`${API_URL}/pinned-slots/?department=${deptId}`, { headers: { 'Authorization': `Token ${auth.token}` } }),
+                        fetch(`${API_URL}/rooms/`, { headers: { 'Authorization': `Token ${auth.token}` } })
                     ]);
-                    const [batches, teachers, subjects, timetables, pins] = await Promise.all([bRes.json(), tRes.json(), subRes.json(), ttRes.json(), pinRes.json()]);
+                    const [batches, teachers, subjects, timetables, pins, rooms] = await Promise.all([bRes.json(), tRes.json(), subRes.json(), ttRes.json(), pinRes.json(), rRes.json()]);
                     app.state.batches = batches.filter(x => x.department == deptId);
                     app.state.teachers = teachers.filter(x => x.department == deptId);
                     app.state.subjects = subjects.filter(x => x.department == deptId);
+                    app.state.rooms = rooms;
                     app.state.variants = timetables;
                     app.state.pins = pins;
                     const mainBatches = app.state.batches.filter(b => !b.parent_batch);
@@ -2131,6 +2141,16 @@
                     });
                     if (!slot.teacher) tSel.value = '';
                     
+                    // Populate Room Select
+                    const rSel = document.getElementById('edit-slot-room');
+                    rSel.innerHTML = '<option value="">Select Room</option>';
+                    if (app.state.rooms) {
+                        app.state.rooms.forEach(r => {
+                            rSel.innerHTML += `<option value="${r.id}" ${r.id === slot.room ? 'selected' : ''}>${r.name} (Cap: ${r.capacity})</option>`;
+                        });
+                    }
+                    if (!slot.room) rSel.value = '';
+                    
                 } catch (e) {
                     alert("Error loading slot details");
                 }
@@ -2147,6 +2167,7 @@
                 const slotId = document.getElementById('edit-slot-id').value;
                 const subjectId = document.getElementById('edit-slot-subject').value;
                 const teacherId = document.getElementById('edit-slot-teacher').value;
+                const roomId = document.getElementById('edit-slot-room').value;
                 
                 const btn = e.target.querySelector('button[type="submit"]');
                 const prevText = btn.textContent;
@@ -2157,7 +2178,7 @@
                     const res = await fetch(`${API_URL}/slots/${slotId}/`, {
                         method: 'PATCH',
                         headers: { 'Content-Type': 'application/json', 'Authorization': `Token ${auth.token}` },
-                        body: JSON.stringify({ subject: subjectId, teacher: teacherId })
+                        body: JSON.stringify({ subject: subjectId, teacher: teacherId, room: roomId })
                     });
                     
                     if (!res.ok) {
