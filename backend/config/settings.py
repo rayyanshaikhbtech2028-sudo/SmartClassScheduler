@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-f1+!h8mcdqxrg*-@z8)i(57n$+r1$48b&j&xzn4o))el(!845f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -130,4 +130,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 }
+import os
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
