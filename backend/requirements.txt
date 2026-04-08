@@ -9,6 +9,7 @@ cycler==0.12.1
 debugpy==1.8.15
 decorator==5.2.1
 Django==6.0.4
+djangorestframework==3.17.1
 executing==2.2.0
 Flask==3.1.1
 fonttools==4.59.0
