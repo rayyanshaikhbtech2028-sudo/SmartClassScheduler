@@ -26,11 +26,11 @@ SECRET_KEY = 'django-insecure-f1+!h8mcdqxrg*-@z8)i(57n$+r1$48b&j&xzn4o))el(!845f
 DEBUG = True
 
 ALLOWED_HOSTS =  [
+    'smart-scheduler-backend.onrender.com',
     'smart-scheduler-backend-k34j.onrender.com',
     'localhost',
     '127.0.0.1'
 ]
-
 
 # Application definition
 
