@@ -1135,7 +1135,7 @@
     </div>
 
     <script>
-        const API_URL = 'http://127.0.0.1:8000/api';
+        const API_URL = 'https://smart-scheduler-backend-k34j.onrender.com/api';
 
         const TIME_SLOTS = [
             { id: 0, label: "07:30 - 08:30" },
@@ -1173,7 +1173,7 @@
                     const res = await fetch(`${API_URL}/login/`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ username: u, password: p }) });
                     if (!res.ok) throw new Error("Invalid Credentials");
                     const data = await res.json();
-                    auth.token = data.token; auth.user = data;
+                    auth.token = data.key; auth.user = data;
                     auth.closeLogin(); auth.updateNav(); router.navigate('dashboard');
                 } catch (err) { alert("Login Failed: " + err.message); }
             },

@@ -126,6 +126,10 @@ STATIC_URL = 'static/'
 
 # CORS CONFIGURATION
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://smartclassscheduler-frontend.onrender.com"
+]
 
 # REST FRAMEWORK
 REST_FRAMEWORK = {
